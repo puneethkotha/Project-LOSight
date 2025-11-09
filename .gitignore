@@ -33,6 +33,8 @@ Thumbs.db
 .env.local
 
 # Data files (if too large for GitHub)
-# CSV file is 368MB - too large for GitHub (100MB limit)
+# Original CSV file is 368MB - too large for GitHub (100MB limit)
 *.csv
+# Exception: Allow the sampled dataset (18MB, safe for GitHub)
+!hospital_data_clean_base_all_drgs.csv
 
