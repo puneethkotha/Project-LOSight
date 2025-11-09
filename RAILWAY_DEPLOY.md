@@ -35,6 +35,7 @@
    - Select **"Deploy from GitHub repo"**
    - Authorize Railway to access your GitHub (if first time)
    - Select your repository: `Project-LOSight` (or `project-losight`)
+   - **Optional**: In the project settings, you can add a description like "Dashboard developed by Puneeth Kotha - Project LOSight"
 
 3. **Configure the Service**
    - Railway will auto-detect it's a Python project

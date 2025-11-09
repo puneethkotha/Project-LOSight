@@ -10,13 +10,15 @@ body {
     color: #333;
     line-height: 1.6;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
     display: grid;
     grid-template-columns: 300px 1fr;
     grid-template-rows: auto 1fr;
-    min-height: 100vh;
+    flex: 1;
     max-width: 100%;
 }
 
@@ -401,5 +403,25 @@ header h1 {
     .chart-container {
         padding: 1.5rem;
     }
+}
+
+/* Footer */
+footer {
+    background: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    padding: 1rem 2rem;
+    text-align: center;
+    color: #666;
+    font-size: 0.85rem;
+    margin-top: 2rem;
+}
+
+footer p {
+    margin: 0;
+}
+
+footer strong {
+    color: #667eea;
+    font-weight: 600;
 }
 

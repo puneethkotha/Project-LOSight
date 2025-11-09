@@ -142,4 +142,8 @@ The code is designed to be straightforward and maintainable, with clear separati
 
 ---
 
+## Credits
+
+Dashboard developed by **Puneeth Kotha** as part of Project LOSight.
+
 This dashboard was created to showcase analyses from the Jupyter notebook in an interactive format suitable for academic review and presentation. It replicates all visualizations and insights from the notebook while providing a more accessible interface for non-technical users.
