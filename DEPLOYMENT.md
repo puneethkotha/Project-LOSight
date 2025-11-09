@@ -35,8 +35,11 @@ This guide explains how to deploy the dashboard to various hosting platforms.
 
 ---
 
-## Option 2: Railway (Free Tier Available)
+## Option 2: Railway (Paid Plan Required)
 
+**Note**: Railway's free tier no longer supports web services - only databases. You'll need a paid plan ($5/month minimum) to deploy web applications.
+
+If you have a paid Railway account:
 1. **Sign up at [railway.app](https://railway.app)**
 2. **Create New Project** → "Deploy from GitHub repo"
 3. **Select your repository**
