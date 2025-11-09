@@ -1,0 +1,16 @@
+runtime: python311
+
+instance_class: F1  # Free tier
+
+automatic_scaling:
+  min_instances: 0
+  max_instances: 1
+
+# Set CSV_DOWNLOAD_URL environment variable here or in Cloud Console
+# env_variables:
+#   CSV_DOWNLOAD_URL: 'https://storage.googleapis.com/your-bucket-name/hospital_data_clean_base_all_drgs.csv'
+
+handlers:
+- url: /.*
+  script: auto
+
