@@ -14,7 +14,7 @@
 
 2. **Push to GitHub**:
    - Go to [github.com](https://github.com) and create a new repository
-   - Name it something like `hospital-los-dashboard`
+   - Name it: `Project-LOSight` (or `project-losight`)
    - Don't initialize with README (you already have files)
    - Copy the repository URL
    - Run:
@@ -34,7 +34,7 @@
    - Click **"New Project"** button (top right)
    - Select **"Deploy from GitHub repo"**
    - Authorize Railway to access your GitHub (if first time)
-   - Select your repository: `hospital-los-dashboard` (or whatever you named it)
+   - Select your repository: `Project-LOSight` (or `project-losight`)
 
 3. **Configure the Service**
    - Railway will auto-detect it's a Python project
@@ -124,7 +124,7 @@
 ### Step 4: Share Your Dashboard
 
 Your dashboard is now live! Share the Railway URL with anyone:
-- Example: `https://hospital-los-dashboard.up.railway.app`
+- Example: `https://project-losight.up.railway.app`
 
 ---
 

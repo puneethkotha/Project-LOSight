@@ -1,6 +1,6 @@
-# Hospital Length of Stay Dashboard - Interactive Website
+# Project LOSight: Data-Driven Prediction of Hospital Length of Stay
 
-A comprehensive, interactive web dashboard for exploring hospital discharge data. This dashboard replicates all visualizations and analyses from the Jupyter notebook in a user-friendly web interface.
+A comprehensive, interactive web dashboard for exploring hospital discharge data and predicting length of stay. This dashboard provides data-driven insights through interactive visualizations and analyses, enabling healthcare professionals to identify high-risk patients and optimize resource allocation.
 
 ## 🚀 Quick Start
 

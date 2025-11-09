@@ -1,5 +1,6 @@
 """
-Flask Backend Server for Hospital LOS Dashboard
+Project LOSight: Data-Driven Prediction of Hospital Length of Stay
+Flask Backend Server for Interactive Dashboard
 Serves data from hospital_data_clean_base_all_drgs.csv
 """
 
@@ -394,7 +395,7 @@ def get_filter_options():
 
 if __name__ == '__main__':
     print("=" * 60)
-    print("Hospital Length of Stay Dashboard - Server")
+    print("Project LOSight: Data-Driven Prediction of Hospital Length of Stay")
     print("=" * 60)
     print("\nLoading data...")
     try:
