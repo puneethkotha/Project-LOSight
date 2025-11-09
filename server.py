@@ -10,6 +10,8 @@ import pandas as pd
 import numpy as np
 import os
 import json
+import urllib.request
+import shutil
 
 # Setup Flask app
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -21,31 +23,81 @@ CORS(app)
 # Global data cache
 df = None
 
+# CSV download URL (set this as an environment variable or update here)
+# Get this URL after uploading CSV to Google Drive or Dropbox
+CSV_DOWNLOAD_URL = os.environ.get('CSV_DOWNLOAD_URL', '')
+
+def download_csv_from_url(url, local_path):
+    """Download CSV file from cloud storage URL"""
+    try:
+        print(f"Downloading CSV from cloud storage...")
+        print(f"URL: {url[:50]}...")  # Show first 50 chars for security
+        
+        # Create directory if it doesn't exist
+        os.makedirs(os.path.dirname(local_path) if os.path.dirname(local_path) else '.', exist_ok=True)
+        
+        # Download with progress
+        with urllib.request.urlopen(url) as response:
+            total_size = int(response.headers.get('Content-Length', 0))
+            downloaded = 0
+            block_size = 8192
+            
+            with open(local_path, 'wb') as out_file:
+                while True:
+                    chunk = response.read(block_size)
+                    if not chunk:
+                        break
+                    out_file.write(chunk)
+                    downloaded += len(chunk)
+                    if total_size > 0:
+                        percent = (downloaded / total_size) * 100
+                        if downloaded % (10 * 1024 * 1024) == 0:  # Print every 10MB
+                            print(f"  Downloaded: {downloaded / (1024*1024):.1f} MB / {total_size / (1024*1024):.1f} MB ({percent:.1f}%)")
+        
+        print(f"✓ CSV downloaded successfully to: {local_path}")
+        return True
+    except Exception as e:
+        print(f"✗ Error downloading CSV: {e}")
+        return False
+
 def load_data():
     """Load and prepare the dataset"""
     global df
     if df is not None:
         return df
     
-    # Try multiple paths (including sample file and Render persistent disk)
+    # Try multiple paths
     data_paths = [
-        os.path.join(BASE_DIR, 'hospital_data_sample.csv'),  # Sampled version (for deployment)
-        os.path.join(BASE_DIR, 'hospital_data_clean_base_all_drgs.csv'),  # Full dataset
         os.path.join(BASE_DIR, '..', 'hospital_data_clean_base_all_drgs.csv'),
-        '/mnt/disk/hospital_data_clean_base_all_drgs.csv',  # Render persistent disk (paid plan)
+        os.path.join(BASE_DIR, 'hospital_data_clean_base_all_drgs.csv'),
         '../hospital_data_clean_base_all_drgs.csv',
-        'hospital_data_clean_base_all_drgs.csv',
-        'hospital_data_sample.csv'  # Sample in current directory
+        'hospital_data_clean_base_all_drgs.csv'
     ]
     
+    csv_file = None
     for path in data_paths:
         if os.path.exists(path):
-            print(f"✓ Loading data from: {path}")
-            df = pd.read_csv(path, low_memory=False)
+            csv_file = path
+            print(f"✓ Found CSV at: {path}")
             break
     
-    if df is None:
-        raise FileNotFoundError("Could not find hospital_data_clean_base_all_drgs.csv")
+    # If not found locally and download URL is set, try downloading
+    if csv_file is None and CSV_DOWNLOAD_URL:
+        local_path = os.path.join(BASE_DIR, 'hospital_data_clean_base_all_drgs.csv')
+        print(f"CSV not found locally. Attempting to download from cloud storage...")
+        if download_csv_from_url(CSV_DOWNLOAD_URL, local_path):
+            csv_file = local_path
+        else:
+            print("Download failed. Please check the CSV_DOWNLOAD_URL environment variable.")
+    
+    if csv_file is None:
+        error_msg = "Could not find hospital_data_clean_base_all_drgs.csv"
+        if not CSV_DOWNLOAD_URL:
+            error_msg += "\nTip: Set CSV_DOWNLOAD_URL environment variable to download from cloud storage"
+        raise FileNotFoundError(error_msg)
+    
+    print(f"Loading data from: {csv_file}")
+    df = pd.read_csv(csv_file, low_memory=False)
     
     # Clean LOS
     df = df[df['Length of Stay'] > 0].copy()

@@ -35,6 +35,4 @@ Thumbs.db
 # Data files (if too large for GitHub)
 # CSV file is 368MB - too large for GitHub (100MB limit)
 *.csv
-# But allow the sample file for deployment
-!hospital_data_sample.csv
 
