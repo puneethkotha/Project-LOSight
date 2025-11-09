@@ -27,13 +27,15 @@ def load_data():
     if df is not None:
         return df
     
-    # Try multiple paths (including Render persistent disk)
+    # Try multiple paths (including sample file and Render persistent disk)
     data_paths = [
-        '/mnt/disk/hospital_data_clean_base_all_drgs.csv',  # Render persistent disk
+        os.path.join(BASE_DIR, 'hospital_data_sample.csv'),  # Sampled version (for deployment)
+        os.path.join(BASE_DIR, 'hospital_data_clean_base_all_drgs.csv'),  # Full dataset
         os.path.join(BASE_DIR, '..', 'hospital_data_clean_base_all_drgs.csv'),
-        os.path.join(BASE_DIR, 'hospital_data_clean_base_all_drgs.csv'),
+        '/mnt/disk/hospital_data_clean_base_all_drgs.csv',  # Render persistent disk (paid plan)
         '../hospital_data_clean_base_all_drgs.csv',
-        'hospital_data_clean_base_all_drgs.csv'
+        'hospital_data_clean_base_all_drgs.csv',
+        'hospital_data_sample.csv'  # Sample in current directory
     ]
     
     for path in data_paths:
