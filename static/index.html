@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Length of Stay Dashboard - Interactive EDA</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>Hospital Length of Stay Dashboard</h1>
+        </header>
+
+        <!-- Sidebar Filters -->
+        <aside class="sidebar">
+            <h2>Filters</h2>
+            
+            <div class="filter-group">
+                <label for="severity-filter">Severity of Illness</label>
+                <select id="severity-filter">
+                    <option value="all">All Severities</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Age Range</label>
+                <div style="padding: 0.5rem; background: #f5f5f5; border-radius: 6px; color: #555; font-size: 0.9rem;">
+                    Adults (18+ years)
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label for="payment-filter">Payment Type</label>
+                <select id="payment-filter">
+                    <option value="all">All Payment Types</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="admission-filter">Type of Admission</label>
+                <select id="admission-filter">
+                    <option value="all">All Admission Types</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="drg-filter">DRG Code (Top 50)</label>
+                <select id="drg-filter">
+                    <option value="all">All DRG Codes</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="los-range">Length of Stay Range (days)</label>
+                <div class="range-inputs">
+                    <input type="number" id="los-min" placeholder="Min">
+                    <span>to</span>
+                    <input type="number" id="los-max" placeholder="Max">
+                </div>
+            </div>
+
+            <button id="apply-filters" class="btn-primary">Apply Filters</button>
+            <button id="reset-filters" class="btn-secondary">Reset All</button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="overview">Overview</button>
+                <button class="tab-btn" data-tab="severity">Severity Analysis</button>
+                <button class="tab-btn" data-tab="demographics">Demographics</button>
+                <button class="tab-btn" data-tab="payment">Payment & Disposition</button>
+                <button class="tab-btn" data-tab="trends">Trends & Patterns</button>
+                <button class="tab-btn" data-tab="outliers">Outlier Analysis</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Overview Tab -->
+                <div id="overview" class="tab-pane active">
+                    <h2>Data Overview</h2>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-title">Median LOS</div>
+                            <div class="metric-number" id="overview-median">-</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Mean LOS</div>
+                            <div class="metric-number" id="overview-mean">-</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Length of Stay Distribution (Histogram)</h3>
+                        <canvas id="los-histogram"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Box Plot Statistics - Length of Stay</h3>
+                        <canvas id="los-boxplot"></canvas>
+                    </div>
+                </div>
+
+                <!-- Severity Tab -->
+                <div id="severity" class="tab-pane">
+                    <h2>Severity of Illness Analysis</h2>
+                    
+                    <div class="chart-container">
+                        <h3>Median LOS by Severity Level</h3>
+                        <canvas id="severity-median-chart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Mean LOS by Severity Level</h3>
+                        <canvas id="severity-mean-chart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Severity × Senior Status Interaction (Median LOS)</h3>
+                        <canvas id="severity-senior-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Demographics Tab -->
+                <div id="demographics" class="tab-pane">
+                    <h2>Demographic Analysis</h2>
+                    
+                    <div class="chart-container">
+                        <h3>Median LOS by Age Group</h3>
+                        <canvas id="age-chart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Median LOS by Gender</h3>
+                        <canvas id="gender-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Payment Tab -->
+                <div id="payment" class="tab-pane">
+                    <h2>Payment Type & Disposition Analysis</h2>
+                    
+                    <div class="chart-container">
+                        <h3>Median LOS by Payment Type (Top 10)</h3>
+                        <canvas id="payment-chart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Median LOS by Type of Admission</h3>
+                        <canvas id="admission-chart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Median LOS: Skilled Nursing Facility Need</h3>
+                        <canvas id="snf-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Trends Tab -->
+                <div id="trends" class="tab-pane">
+                    <h2>Trends & Patterns</h2>
+                    
+                    <div class="chart-container">
+                        <h3>Top 20 DRG Codes by Volume</h3>
+                        <canvas id="drg-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Outliers Tab -->
+                <div id="outliers" class="tab-pane">
+                    <h2>Outlier Analysis</h2>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-title">Mild Outliers (1.5×IQR)</div>
+                            <div class="metric-number" id="outlier-mild">-</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Extreme Outliers (3×IQR)</div>
+                            <div class="metric-number" id="outlier-extreme">-</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Upper Bound (1.5×IQR)</div>
+                            <div class="metric-number" id="outlier-upper">-</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Extreme Upper (3×IQR)</div>
+                            <div class="metric-number" id="outlier-extreme-upper">-</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Outlier Scatter Plot</h3>
+                        <canvas id="outlier-scatter"></canvas>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
+

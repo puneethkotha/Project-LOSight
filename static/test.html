@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Server Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background: #f0f0f0;
+        }
+        .success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            padding: 1rem;
+            border-radius: 5px;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            padding: 1rem;
+            border-radius: 5px;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>Server Test Page</h1>
+    <div class="success">
+        ✓ If you can see this page, the Flask server is working!
+    </div>
+    <p><a href="/">Go to Dashboard</a></p>
+    <p><a href="/api/filters/options">Test API Endpoint</a></p>
+    
+    <script>
+        // Test API
+        fetch('/api/filters/options')
+            .then(r => r.json())
+            .then(data => {
+                document.body.innerHTML += `
+                    <div class="success" style="margin-top: 1rem;">
+                        ✓ API is working!<br>
+                        Found ${Object.keys(data).length} filter options
+                    </div>
+                `;
+            })
+            .catch(err => {
+                document.body.innerHTML += `
+                    <div class="error" style="margin-top: 1rem;">
+                        ✗ API Error: ${err.message}<br>
+                        Make sure the server is running and data is loaded
+                    </div>
+                `;
+            });
+    </script>
+</body>
+</html>
+
